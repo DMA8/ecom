@@ -1,0 +1,67 @@
+syntax = "proto3";
+option go_package="./grpc_cart;grpc_cart";
+package ecom.cart;
+
+import "validate/validate.proto";
+
+service CartService {
+    rpc CartList (CartListRequest) returns (CartListResponse);
+    rpc CartCheckout (CartCheckoutRequest) returns (CartCheckoutResponse);
+    rpc CartClear(CartClearRequest) returns (CartClearResponse);
+
+    rpc ItemAdd(ItemAddRequest) returns (ItemAddResponse);
+    rpc ItemDelete(ItemDeleteRequest) returns (ItemDeleteResponse);
+}
+
+message CartListRequest {
+    int64 userID = 1 [(validate.rules).int64.gt = 0];
+}
+
+message CartListResponse {
+    uint32 totalPrice = 1;
+    repeated CartItem cartItems = 2;
+}
+
+message CartItem {
+    uint32 sku = 1;
+    uint32 count = 2;
+    string name = 3;
+    uint32 price = 4;
+}
+
+message CartCheckoutRequest {
+    int64 userID = 1 [(validate.rules).int64.gt = 0];
+}
+
+message CartCheckoutResponse {
+    uint32 orderID = 1;
+}
+
+message CartClearRequest {
+    int64 userID = 1 [(validate.rules).int64.gt = 0];
+}
+
+message CartClearResponse {
+}
+
+message ItemAddRequest {
+    int64 userID = 1 [(validate.rules).int64.gt = 0];
+    ItemToAdd itemToAdd = 2;
+}
+
+message ItemToAdd {
+    uint32 sku = 1 [(validate.rules).uint32.gt = 0];
+    uint32 count = 2 [(validate.rules).uint32.gt = 0];
+}
+
+message ItemAddResponse {
+}
+
+message ItemDeleteRequest {
+    int64 userID = 1 [(validate.rules).int64.gt = 0];
+    uint32 sku = 2 [(validate.rules).uint32.gt = 0];
+}
+
+message ItemDeleteResponse {
+
+}

@@ -1,0 +1,60 @@
+syntax = "proto3";
+option go_package="./grpc_loms;grpc_loms";
+package ecom.loms;
+import "/Users/dimab/Desktop/homework-1/loms/vendor-proto/validate/validate.proto";
+
+
+service LOMSService {
+    rpc OrderCancel (OrderCancelRequest) returns (OrderCancelResponse);
+    rpc OrderCreate (OrderCreateRequest) returns (OrderCreateResponse);
+    rpc OrderInfo(OrderInfoRequest) returns (OrderInfoResponse);
+    rpc OrderPay(OrderPayRequest) returns (OrderPayResponse);
+
+    rpc StockInfo(StockInfoRequest) returns (StockInfoResponse);
+}
+
+message OrderCancelRequest {
+    uint32 order_id = 1 [(validate.rules).uint32.gt = 0];
+}
+
+message OrderCancelResponse {
+}
+
+message OrderCreateRequest {
+    int64 user_id = 1 [(validate.rules).int64.gt = 0];
+    repeated Item items = 2;
+}
+
+message Item {
+    uint32 sku = 1 [(validate.rules).uint32.gt = 0];
+    uint32 count = 2 [(validate.rules).uint32.gt = 0];
+}
+
+message OrderCreateResponse {
+    int64 order_id = 1;
+}
+
+message OrderInfoRequest {
+    int64 order_id = 1[(validate.rules).int64.gt = 0];
+}
+
+message OrderInfoResponse {
+    repeated Item items = 1;
+    string status = 2;
+    int64 user_id = 3;
+}
+
+message OrderPayRequest {
+    int64 order_id = 1 [(validate.rules).int64.gt = 0];
+}
+
+message OrderPayResponse {
+}
+
+message StockInfoRequest {
+    uint32 sku = 1 [(validate.rules).uint32.gt = 0];
+}
+
+message StockInfoResponse {
+    uint32 count = 1;
+}

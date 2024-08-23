@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS stock_reserve (
+    id SERIAL PRIMARY KEY,
+    order_id BIGINT NOT NULL,
+    sku BIGINT NOT NULL,
+    quantity INT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (sku) REFERENCES stocks(sku)
+);
+
